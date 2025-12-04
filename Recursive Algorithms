@@ -1,0 +1,123 @@
+Algorithm test(n){
+ if(n > 0){
+  print n;
+  test(n-1);
+  test(n-1);
+ }
+}
+
+Step-by-step Analysis:
+
+1. Understanding the Algorithm.
+This is a binary tree recursion where:
+- Each call makes 2 recursive calls with `n-1`
+- Base case: when `n ≤ 0`
+- Each call prints the current value of `n`
+
+2. Visualizing the Recursion Tree.
+For `n = 3`:
+        test(3)
+        /      \
+   test(2)     test(2)
+    /    \      /    \
+test(1) test(1) test(1) test(1)
+  /  \    /  \    /  \    /  \
+test(0)... (total 8 test(0) calls)
+
+
+3. Space Complexity Calculation.
+
+Key Insight: In recursion, space complexity is determined by the maximum depth of the recursion stack (not the total number of calls).
+
+For this algorithm:
+- At any point, we're only storing one "branch" of the recursion tree in the call stack
+- We go all the way down to the base case before backtracking
+- The maximum recursion depth is **n** (when `n > 0`)
+
+Call Stack Trace for `n = 3`:
+
+Maximum stack depth occurs on the leftmost path:
+
+Stack frames:
+1. test(3)
+2. test(3) → test(2)
+3. test(3) → test(2) → test(1)
+4. test(3) → test(2) → test(1) → test(0)  ← MAX DEPTH = 4 (n+1)
+
+Then backtracking happens...
+
+4. Mathematical Analysis.
+
+Let's define:
+- `S(n)` = space complexity for input size `n`
+
+Recurrence Relation:
+
+S(n) = S(n-1) + O(1)  (since we only keep one branch in memory at a time)
+S(0) = O(1)
+
+Solving the recurrence:
+S(n) = S(n-1) + c
+     = S(n-2) + 2c
+     = S(n-3) + 3c
+     ...
+     = S(0) + n*c
+     = O(1) + O(n)
+     = O(n)
+
+5. Time Complexity (for comparison).
+
+Time Complexity:
+- Each call makes 2 recursive calls
+- Total calls = 2⁰ + 2¹ + 2² + ... + 2ⁿ = 2ⁿ⁺¹ - 1 ≈ O(2ⁿ)
+- Time complexity is **exponential: O(2ⁿ)
+
+Time vs Space:
+Time: O(2ⁿ)  ← Exponential
+Space: O(n)  ← Linear
+
+6. Example Values.
+
+| n | Total Calls | Max Stack Depth |
+|---|-------------|-----------------|
+| 1 | 3 calls     | 2 frames        |
+| 2 | 7 calls     | 3 frames        |
+| 3 | 15 calls    | 4 frames        |
+| 4 | 31 calls    | 5 frames        |
+| n | 2ⁿ⁺¹ - 1 calls | n+1 frames    |
+
+7. Memory Allocation Details.
+
+Each stack frame stores:
+1. Parameter `n` (integer - 4/8 bytes)
+2. Return address
+3. Local variables (none in this case)
+4. Other bookkeeping information
+
+Total memory ≈ (n+1) × (frame size) = O(n)
+
+8. Alternative Perspective (using recurrence tree).
+
+Consider the recursion tree:
+- Width (total nodes) = O(2ⁿ) - but these don't exist simultaneously
+- Height (max depth) = O(n)
+- Space = maximum active frames = **height of tree** = **O(n)**
+
+Final Answer.
+Space Complexity: O(n)
+Time Complexity: O(2ⁿ)
+
+Visual Proof.
+
+For n = 3:
+
+Active stack at different points:
+
+1. Initial call: [test(3)]
+2. First recursion: [test(3), test(2)]
+3. Going deeper: [test(3), test(2), test(1)]
+4. Max depth: [test(3), test(2), test(1), test(0)] ← n+1 frames
+5. Backtrack: [test(3), test(2), test(1)]
+6. Right branch: [test(3), test(2), test(1)] → then [test(3), test(2), test(1), test(0)]
+   ... and so on
+
